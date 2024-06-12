@@ -1,25 +1,36 @@
-const suit = 'hearts';
-const cardsWrapper = document.querySelector('.cards-wrapper');
-const btnWrapper = document.querySelector('.btn-wrapper'); /* eslint-disable-line */
-const selectedCardsWrapper = document.querySelector('.selected-cards'); /* eslint-disable-line */
+//const suit = "hearts";
+const cardsWrapper = document.querySelector(".cards-wrapper");
+const btnWrapper =
+  document.querySelector(".btn-wrapper"); /* eslint-disable-line */
+const selectedCardsWrapper =
+  document.querySelector(".selected-cards"); /* eslint-disable-line */
+
+const suits = ["hearts", "clubs", "diamonds", "spades"];
 
 function createCards() {
   const cards = [];
-  // Create an array with objects containing the value and the suit of each card
-  for (let i = 1; i <= 13; i += 1) {
-    const cardObject = {
-      value: i,
-      suit,
-    };
-    cards.push(cardObject);
-  }
+
+  suits.forEach((suit) => {
+    // Create an array with objects containing the value and the suit of each card
+    for (let i = 1; i <= 13; i += 1) {
+      const cardObject = {
+        value: i,
+        suit: suit,
+      };
+      cards.push(cardObject);
+    }
+  });
 
   // For each dataObject, create a new card and append it to the DOM
   cards.forEach((card, i) => {
-    const positionFromLeft = i * 15;
-    const cardElement = document.createElement('div');
-    cardElement.setAttribute('data-value', card.value);
-    cardElement.classList.add('card', `${card.suit}-${card.value}`);
+    const positionFromLeft = i * 35;
+    const cardElement = document.createElement("div");
+    cardElement.addEventListener("click", () => {
+      selectedCardsWrapper.append(cardElement);
+      cardElement.style.left = 0;
+    });
+    cardElement.setAttribute("data-value", card.value);
+    cardElement.classList.add("card", `${card.suit}-${card.value}`);
     cardElement.style.left = `${positionFromLeft}px`;
     cardsWrapper.append(cardElement);
   });
@@ -27,7 +38,19 @@ function createCards() {
 
 // Function to clear out the initial button and create new buttons to play the game.
 function createButtons() {
-  // Your Code
+  const buttonElement = document.createElement("button");
+  buttonElement.innerText = "Show/Hide";
+  buttonElement.addEventListener("click", () => {
+    const hasHiddenClass = cardsWrapper.className.includes("hidden");
+    if (hasHiddenClass) {
+      cardsWrapper.classList.remove("hidden");
+    } else {
+      cardsWrapper.classList.add("hidden");
+    }
+  });
+  btnWrapper.innerHTML = "";
+  btnWrapper.append(buttonElement);
+  buttonElement.classList.add("btn", "btn-lg", "btn-secondary");
 }
 
 // Function to start the game by clearing the wrapper, creating
@@ -37,4 +60,4 @@ function startGame() {
   createCards();
 }
 
-document.getElementById('start-game').addEventListener('click', startGame);
+document.getElementById("start-game").addEventListener("click", startGame);
